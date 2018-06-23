@@ -7,30 +7,42 @@
 
 @implementation MainViewController
 
--(IBAction) notePressed:(UIButton*)sender{
+-(IBAction) notePressed:(UIButton*)sender
+{
+    NSString* soundFileName = [NSString stringWithFormat:@"%@%ld",@"note",[sender tag]];
+    [self playSoundWithFile:soundFileName];
+}
+
+-(void) playSoundWithFile: (NSString*) name
+{
+    NSURL* url = [[NSBundle mainBundle] URLForResource: name withExtension:@"wav"];
     
-    NSURL* url = [[NSBundle mainBundle] URLForResource: [NSString stringWithFormat:@"%@%ld",@"note",[sender tag]] withExtension:@"wav"];
-    
-    @try {
+    @try
+    {
         _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
-        if([self audioPlayer] == nil) {
+        if([self audioPlayer] == nil)
+        {
             return;
         }
         [[self audioPlayer] prepareToPlay];
         [[self audioPlayer] play];
     }
-    @catch(NSException *exception) {
+    @catch(NSException *exception)
+    {
         NSLog(@"AVAudio Player could not play the soud due to: %@",[exception description]);
     }
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     [self setupNavigation];
 }
 
-- (void) setupNavigation {
-    if (@available(iOS 11.0, *)) {
+- (void) setupNavigation
+{
+    if (@available(iOS 11.0, *))
+    {
         [[[self navigationController] navigationBar] setPrefersLargeTitles:YES];
     }
     [self setTitle: @"XylophoneObjC"];

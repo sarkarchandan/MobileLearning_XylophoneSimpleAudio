@@ -6,15 +6,7 @@ class MainViewController: UIViewController {
     
     @IBAction
     func notePressed(_ sender: UIButton) {
-        let url = Bundle.main.url(forResource: "note\(sender.tag)", withExtension: "wav")!
-        do {
-            audioPlayer = try AVAudioPlayer(contentsOf: url)
-            guard let player = audioPlayer else { return }
-            player.prepareToPlay()
-            player.play()
-        }catch {
-            print(error.localizedDescription)
-        }
+        playSoundForFileWith(name: "note\(sender.tag)")
     }
 
     override func viewDidLoad() {
@@ -29,6 +21,18 @@ class MainViewController: UIViewController {
         title = "XylophoneSwift"
         navigationController?.navigationBar.barStyle = .blackTranslucent
         navigationController?.navigationBar.tintColor = .white
+    }
+    
+    private func playSoundForFileWith(name: String) {
+        let url = Bundle.main.url(forResource: name, withExtension: "wav")!
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: url)
+            guard let player = audioPlayer else { return }
+            player.prepareToPlay()
+            player.play()
+        }catch {
+            print(error.localizedDescription)
+        }
     }
     
     private var audioPlayer: AVAudioPlayer!
